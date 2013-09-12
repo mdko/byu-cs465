@@ -2,6 +2,7 @@ package keyexpansion
 
 import (
 		"testing"
+		"github.com/mdko/cs465/aes/constants"
 )
 
 func TestRotWord(t *testing.T) {
@@ -94,6 +95,19 @@ func TestXORWords(t *testing.T) {
 
 }
 
-func TextKeyExpansion(t * testing.T) {
+func TextKeyExpansion(t *testing.T) {
+		// key = 0x2b 7e 15 16 28 ae d2 a6 ab f7 15 88 09 cf 4f 3c
+		cipherKey0 := [4][4]byte {
+				{ 0x2b, 0x7e, 0x15, 0x16, } ,
+				{ 0x28, 0xae, 0xd2, 0xa6, } ,
+				{ 0xab, 0xf7, 0x15, 0x88, } ,
+				{ 0x09, 0xcf, 0x4f, 0x3c, } ,
+		}
 
+		var expected [constants.Nb * (constants.Nr + 1)][4]byte
+
+		if result := KeyExpansion(cipherKey0); result == expected {
+			t.Errorf("Key Expansion result: %v", result)
+		}
+//		KeyExpansion([Nk][4])
 }

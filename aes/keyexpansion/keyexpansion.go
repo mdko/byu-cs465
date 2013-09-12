@@ -2,6 +2,11 @@ package keyexpansion
 
 import (
 		"github.com/mdko/cs465/aes/constants"
+		"fmt"
+)
+
+const (
+		DEBUG = true
 )
 
 // TODO do and test this function
@@ -21,6 +26,9 @@ func KeyExpansion(key[constants.Nk][4]byte) (w[constants.Nb * (constants.Nr + 1)
 						temp = SubWord(temp)
 				}
 				w[i] = XORWords(w[i - constants.Nk], temp)
+				if DEBUG {
+						fmt.Printf("w[%v] = %v XOR w[%v - %v]\n", w[i], temp, i, constants.Nk)
+				}
 		}
 		return
 }
