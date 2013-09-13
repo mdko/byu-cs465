@@ -60,9 +60,35 @@ func MixColumns(in_state[4][constants.Nb]byte) [4][constants.Nb]byte {
 		return out_state
 }
 
-// TODO implement
-func InvMixColumns(in_state[4][constants.Nb]byte) (out_state[4][constants.Nb]byte) {
-	return
+func InvMixColumns(in_state[4][constants.Nb]byte) [4][constants.Nb]byte {
+	var out_state[4][constants.Nb]byte
+		for c := 0; c < constants.Nb; c++ { // for each column (0 to 3)
+				out_state[c][0] = FFAdd(
+							FFAdd(
+								FFAdd(	FFMultiply(0x0e, in_state[c][0]),
+										FFMultiply(0x0b, in_state[c][1])),
+								FFMultiply(0x0d, in_state[c][2])),
+							FFMultiply(0x09, in_state[c][3]))
+				out_state[c][1] = FFAdd(
+							FFAdd(
+								FFAdd(	FFMultiply(0x09, in_state[c][0]),
+										FFMultiply(0x0e, in_state[c][1])),
+								FFMultiply(0x0b, in_state[c][2])),
+							FFMultiply(0x0d, in_state[c][3]))
+				out_state[c][2] = FFAdd(
+							FFAdd(
+								FFAdd(	FFMultiply(0x0d, in_state[c][0]),
+										FFMultiply(0x09, in_state[c][1])),
+								FFMultiply(0x0e, in_state[c][2])),
+							FFMultiply(0x0b, in_state[c][3]))
+				out_state[c][3] = FFAdd(
+							FFAdd(
+								FFAdd(	FFMultiply(0x0b, in_state[c][0]),
+										FFMultiply(0x0d, in_state[c][1])),
+								FFMultiply(0x09, in_state[c][2])),
+							FFMultiply(0x0e, in_state[c][3]))
+		}
+		return out_state
 }
 
 func FFAdd(l_byte byte, r_byte byte) byte {

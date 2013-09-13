@@ -52,39 +52,9 @@ func TestFFAdd(t *testing.T) {
 						}
 				}
 		}
-
-	//a := make([][]int, 4)	// slices
-	////for i := range a {
-	////		a[i] = make([]int, 4)
-	////}
-	//aAll := make([]int, 4*4)
-	//for i := range a {
-	//		a[i], aAll = aAll[:4], aAll[4:]
-	//}
-	//ax := len(a)
-	//ay := len(a[0])
-	//fmt.Println(ax, ay)
-
-	//var b [4][5]int			// arrays
-	//x := len(b)				// number in 1st dimension
-	//y := len(b[0])			// number of elements in each element (2nd dim)
-	//fmt.Println(x, y)
 }
 
 func TestMixColumns(t *testing.T) {
-	// inState0 := [4][4]byte {
-	// 		{ 0xd4, 0xe0, 0xb8, 0x1e },
-	// 		{ 0xbf, 0xb4, 0x41, 0x27 },
-	// 		{ 0x5d, 0x52, 0x11, 0x98 },
-	// 		{ 0x30, 0xae, 0xf1, 0xe5 },
-	// }
-
-	// expectedOutState0 := [4][4]byte {
-	// 		{ 0x04, 0xe0, 0x48, 0x28 },
-	// 		{ 0x66, 0xcb, 0xf8, 0x06 },
-	// 		{ 0x81, 0x19, 0xd3, 0x26 },
-	// 		{ 0xe5, 0x9a, 0x7a, 0x4c },
-	// }
 	inState0 := [4][4]byte {
 			{ 0xd4, 0xbf, 0x5d, 0x30 },
 			{ 0xe0, 0xb4, 0x52, 0xae },
@@ -100,22 +70,9 @@ func TestMixColumns(t *testing.T) {
 	}
 
 	if realOutState0 := MixColumns(inState0); realOutState0 != expectedOutState0 {
-			t.Errorf("FFMultiply:\ngot  %x\nwant %x", realOutState0, expectedOutState0)
+			t.Errorf("Mix Columns:\ngot  %x\nwant %x", realOutState0, expectedOutState0)
 	}
 
-	// inState1 := [4][4]byte {
-	// 		{ 0x49, 0x45, 0x7f, 0x77 },
-	// 		{ 0xdb, 0x39, 0x02, 0xde },
-	// 		{ 0x87, 0x53, 0xd2, 0x96 },
-	// 		{ 0x3b, 0x89, 0xf1, 0x1a },
-	// }
-
-	// expectedOutState1 := [4][4]byte {
-	// 		{ 0x58, 0x1b, 0xdb, 0x1b },
-	// 		{ 0x4d, 0x4b, 0xe7, 0x6b },
-	// 		{ 0xca, 0x5a, 0xca, 0xb0 },
-	// 		{ 0xf1, 0xac, 0xa8, 0xe5 },
-	// }
 	inState1 := [4][4]byte {
 			{ 0x49, 0xdb, 0x87, 0x3b },
 			{ 0x45, 0x39, 0x53, 0x89 },
@@ -131,6 +88,44 @@ func TestMixColumns(t *testing.T) {
 	}
 
 	if realOutState1 := MixColumns(inState1); realOutState1 != expectedOutState1 {
-			t.Errorf("FFMultiply:\ngot  %x\nwant %x", realOutState1, expectedOutState1)
+			t.Errorf("Mix Columns:\ngot  %x\nwant %x", realOutState1, expectedOutState1)
+	}
+}
+
+func TestInvMixColumns(t *testing.T) {
+	// bd6e7c3d f2b5779e 0b61216e 8b10b689 (C.1 eic after round 2 is_row)
+	inState0 := [4][4]byte {
+		{ 0xbd, 0x6e, 0x7c, 0x3d, } ,
+		{ 0xf2, 0xb5, 0x77, 0x9e, } ,
+		{ 0x0b, 0x61, 0x21, 0x6e, } ,
+		{ 0x8b, 0x10, 0xb6, 0x89, } ,
+	}
+	// 4773b91f f72f3543 61cb018e a1e6cf2c
+	expectedState0 := [4][4]byte {
+		{ 0x47, 0x73, 0xb9, 0x1f, } ,
+		{ 0xf7, 0x2f, 0x35, 0x43, } ,
+		{ 0x61, 0xcb, 0x01, 0x8e, } ,
+		{ 0xa1, 0xe6, 0xcf, 0x2c, } ,
+	}
+	if result := InvMixColumns(inState0); result != expectedState0 {
+			t.Errorf("InvMixColumns:\ngot  %x\nwant %x", result, expectedState0)
+	}
+
+	// c81677bc 9b7ac93b 25027992 b0261996 (C.1 eic after round 5 is_row)
+	inState1 := [4][4]byte {
+		{ 0xc8, 0x16, 0x77, 0xbc, } ,
+		{ 0x9b, 0x7a, 0xc9, 0x3b, } ,
+		{ 0x25, 0x02, 0x79, 0x92, } ,
+		{ 0xb0, 0x26, 0x19, 0x96, } ,
+	}
+	// 18f78d77 9a93eef4 f6742967 c47f5ffd
+	expectedState1 := [4][4]byte {
+		{ 0x18, 0xf7, 0x8d, 0x77, } ,
+		{ 0x9a, 0x93, 0xee, 0xf4, } ,
+		{ 0xf6, 0x74, 0x29, 0x67, } ,
+		{ 0xc4, 0x7f, 0x5f, 0xfd, } ,
+	}
+	if result := InvMixColumns(inState1); result != expectedState1 {
+			t.Errorf("InvMixColumns:\ngot  %x\nwant %x", result, expectedState1)
 	}
 }
