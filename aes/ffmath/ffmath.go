@@ -1,11 +1,8 @@
 package ffmath
 
 import (
-		"fmt"
+		"github.com/mdko/cs465/aes/constants"
 )
-
-const Nb = 4
-const DEBUG = false
 
 func XTime(in byte) (out byte) {
 			overflow := (in & 0x80) == 0x80	// The msb is set, so multiplying by two will overflow into a 2nd byte
@@ -16,39 +13,55 @@ func XTime(in byte) (out byte) {
 			return out
 }
 
-func MixColumns(in_state[4][Nb]byte) [4][Nb]byte {
-		var out_state[4][Nb]byte
-		for c := 0; c < Nb; c++ { // for each column (0 to 3)
-				out_state[0][c] = FFAdd(
+// Note to self: in a state like
+// [ ] [ ] [ ] [ ]
+// [ ] [ ] [ ] [ ]
+// [ ] [ ] [ ] [ ]
+// [ ] [ ] [ ] [ ]
+//  |	|	|	array[3]
+//	|	|	array[2]
+//  |   array[1]
+//  array[0]
+// I.e. in the Go represenation
+// state := [4][4]byte {
+//			{ 0x49, 0xdb, 0x87, 0x3b }, <--array[0] is a *column* as shown in the spec (each row holds a column, backwards but oh well)
+//			{ 0x45, 0x39, 0x53, 0x89 },
+//			{ 0x7f, 0x02, 0xd2, 0xf1 },
+//			{ 0x77, 0xde, 0x96, 0x1a },
+//	}
+func MixColumns(in_state[4][constants.Nb]byte) [4][constants.Nb]byte {
+		var out_state[4][constants.Nb]byte
+		for c := 0; c < constants.Nb; c++ { // for each column (0 to 3)
+				out_state[c][0] = FFAdd(
 							FFAdd(
-								FFAdd(	FFMultiply(0x02, in_state[0][c]),
-										FFMultiply(0x03, in_state[1][c])),
-								in_state[2][c]),
-							in_state[3][c])
-				out_state[1][c] = FFAdd(
+								FFAdd(	FFMultiply(0x02, in_state[c][0]),
+										FFMultiply(0x03, in_state[c][1])),
+								in_state[c][2]),
+							in_state[c][3])
+				out_state[c][1] = FFAdd(
 							FFAdd(
-								FFAdd(	in_state[0][c],
-										FFMultiply(0x02, in_state[1][c])),
-								FFMultiply(0x03, in_state[2][c])),
-							in_state[3][c])
-				out_state[2][c] = FFAdd(
+								FFAdd(	in_state[c][0],
+										FFMultiply(0x02, in_state[c][1])),
+								FFMultiply(0x03, in_state[c][2])),
+							in_state[c][3])
+				out_state[c][2] = FFAdd(
 							FFAdd(
-								FFAdd(	in_state[0][c],
-										in_state[1][c]),
-								FFMultiply(0x02, in_state[2][c])),
-							FFMultiply(0x03, in_state[3][c]))
-				out_state[3][c] = FFAdd(
+								FFAdd(	in_state[c][0],
+										in_state[c][1]),
+								FFMultiply(0x02, in_state[c][2])),
+							FFMultiply(0x03, in_state[c][3]))
+				out_state[c][3] = FFAdd(
 							FFAdd(
-								FFAdd(	FFMultiply(0x03, in_state[0][c]),
-										in_state[1][c]),
-								in_state[2][c]),
-							FFMultiply(0x02, in_state[3][c]))
+								FFAdd(	FFMultiply(0x03, in_state[c][0]),
+										in_state[c][1]),
+								in_state[c][2]),
+							FFMultiply(0x02, in_state[c][3]))
 		}
 		return out_state
 }
 
 // TODO implement
-func InvMixColumns(in_state[4][Nb]byte) (out_state[4][Nb]byte) {
+func InvMixColumns(in_state[4][constants.Nb]byte) (out_state[4][constants.Nb]byte) {
 	return
 }
 
@@ -73,11 +86,6 @@ func FFMultiply(l_byte byte, r_byte byte) byte {
 								i = i << 1
 						}
 						result = FFAdd(result, current_result)
-
-						if DEBUG {
-								fmt.Printf("Current bit %x\n", bitmask)
-								fmt.Printf("Current result to add %x\n", current_result)
-						}
 				}
 		}
 		return result
