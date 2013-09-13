@@ -47,6 +47,11 @@ func MixColumns(in_state[4][Nb]byte) [4][Nb]byte {
 		return out_state
 }
 
+// TODO implement
+func InvMixColumns(in_state[4][Nb]byte) (out_state[4][Nb]byte) {
+	return
+}
+
 func FFAdd(l_byte byte, r_byte byte) byte {
 		return l_byte ^ r_byte // XOR
 }
