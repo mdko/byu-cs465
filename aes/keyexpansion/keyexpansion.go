@@ -6,10 +6,9 @@ import (
 )
 
 const (
-		DEBUG = true
+		DEBUG = false
 )
 
-// TODO do and test this function
 func KeyExpansion(key[constants.Nk][4]byte) (w[constants.Nb * (constants.Nr + 1)][4]byte) {
 		var temp[4]byte
 		for i := 0; i < constants.Nk; i++ {
@@ -22,12 +21,12 @@ func KeyExpansion(key[constants.Nk][4]byte) (w[constants.Nb * (constants.Nr + 1)
 			temp = w[i - 1]
 				if i % constants.Nk == 0 {
 						temp = XORWords(SubWord(RotWord(temp)), MakeByteArray(constants.Rcon[i/constants.Nk]))
-				} else if constants.Nk > 6 && i % constants.Nk == 4 {
+				} else if (constants.Nk > 6) && ((i % constants.Nk) == 4) {
 						temp = SubWord(temp)
 				}
 				w[i] = XORWords(w[i - constants.Nk], temp)
 				if DEBUG {
-						fmt.Printf("w[%v] = %v XOR w[%v - %v]\n", w[i], temp, i, constants.Nk)
+						fmt.Printf("%x = %x XOR %x\n", w[i], temp, w[i - constants.Nk])
 				}
 		}
 		return

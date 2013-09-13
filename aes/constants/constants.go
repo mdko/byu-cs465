@@ -2,8 +2,8 @@ package constants
 
 const (
 Nb = 4		// Number of columns (32 bit words) comprising the State; here, always 4
-Nk = 4		// Number of 32-bit words comprising the Cipher Key
-Nr = 10		// Number of rounds, which is 10
+Nk = 4		// Number of 32-bit words comprising the Cipher Key (4, 6, or 8)
+Nr = 10		// Number of rounds, which is 10 for 128-bit, 12 for 192-bit, and 14 for 256-bit
 )
 
 var (
