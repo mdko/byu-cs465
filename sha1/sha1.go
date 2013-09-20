@@ -139,14 +139,11 @@ func run2ndPreimageAttack() {
 
 			var numTries int = 0
 			for {	
-				numTries++
-				if (float64(numTries) > math.Pow(2, float64(bitN + 1))) {
-					trialN--
-					break
-				}
 				
 				// Generate new message m2 that is n + 1 bits long
-				m2 := rand.Uint32() & getBitMask(bitN + 1)
+				//m2 := rand.Uint32() & getBitMask(bitN + 1)
+				m2 := uint32(numTries) & getBitMask(bitN + 1)
+				numTries++
 				buf = make([]byte, 4)
 				debugPrint(fmt.Sprintf("Message m2: %x\n", m2))
 				
