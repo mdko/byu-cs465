@@ -15,7 +15,7 @@ var debug bool = false
 var collisionLowN int = 20
 var collisionHighN int = 30
 
-var preimageLowN int = 17		//13
+var preimageLowN int = 21		//13
 var preimageHighN int = 21		//21
 
 var numTrials int = 20
