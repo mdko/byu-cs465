@@ -23,6 +23,9 @@ type Hashm interface {
 	// Overrides registers (I added this for mac-attack)
 	OverrideRegisters(vals [5]uint32)
 
+	// Change length appended after padding (I added this)
+	ChangeLength(length uint64)
+
 	// Size returns the number of bytes Sum will return.
 	Size() int
 

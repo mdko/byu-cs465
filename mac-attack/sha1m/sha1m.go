@@ -21,7 +21,7 @@ const Size = 20
 const BlockSize = 64
 
 const (
-	chunk = 64
+	chunk = 64			//512 bits in each chunk
 	init0 = 0x67452301
 	init1 = 0xEFCDAB89
 	init2 = 0x98BADCFE
@@ -55,6 +55,10 @@ func (d *digest) OverrideRegisters(vals [5]uint32) {
 	d.h[4] = vals[4]
 	d.nx = 0
 	d.len = 0
+}
+
+func (d *digest) ChangeLength(length uint64) {
+	d.len = length
 }
 
 // New returns a new hash.Hash computing the SHA1 checksum.
