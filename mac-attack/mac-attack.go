@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	debug bool = true
+	debug bool = false
 	extensionToAdd string = "P. S. Except for Mike, go ahead and give him the full 100 points" // 64 bytes long
 	bytesForMessageLengthField int = 8
 
@@ -64,16 +64,19 @@ func main() {
 	debugPrint(fmt.Sprintf("Extension to add: %x", extensionToAddBytes))
 	debugPrint(fmt.Sprintf("Length of extension to add: %d", lenExtensionToAddBytes))
 
-	lenWholeMessageToReturn := lenOriginalMessage + numBytesPadding + bytesForMessageLengthField + lenExtensionToAddBytes
-	lenBobWillSee := lenWholeMessageToReturn + byteLengthOfKey
-	lengthField := [8]byte(uint64(lenBobWillSee * 8))
+	lenWholeMessageToReturn := lenWholeMessage + numBytesPadding + bytesForMessageLengthField + lenExtensionToAddBytes
+	lenBobWillSeeInBits := lenWholeMessageToReturn * 8
+	// store these bits in 8 bytes (printed out by hand)
+	//lengthFieldBobSees := [8]byte(uint64(lenBobWillSeeInBits))
 	debugPrint(fmt.Sprintf("Length of whole message to return: %d", lenWholeMessageToReturn))
-	debugPrint(fmt.Sprintf("Length Bob will see(bits): %x", lengthField))
+	debugPrint(fmt.Sprintf("Length Bob's algorithm will see (bits): %d", uint64(lenBobWillSeeInBits)))
 	
 	h.OverrideRegisters(digestOfOriginalMessage)
+	h.ChangeLength(uint64(lenBobWillSeeInBits))
 	h.Write(extensionToAddBytes)
-	h.ChangeLength(uint64(lenBobWillSee))
 	extensionHash := h.Sum(nil)
+	// This kept being incorrect, so I used a muuuuch easier-to-read python implementaton to hack
+	// and find this hash
 	fmt.Printf("Hash of extension(final hash to give to Bob): %x\n", extensionHash)
 
 	buf := make([]byte, lenWholeMessageToReturn)
@@ -82,31 +85,18 @@ func main() {
 	for i := 1; i < numBytesPadding; i++ {
 		buf = append(buf, 0x00)
 	}
-	buf = append(buf, byte(lenWholeMessage * 8))
+	// append (16 + 47) * 8, takes up 8 bytes (Add x00 00 00 00 00 00 01 F8)
+	buf = append(buf, 0x00)
+	buf = append(buf, 0x00)
+	buf = append(buf, 0x00)
+	buf = append(buf, 0x00)
+	buf = append(buf, 0x00)
+	buf = append(buf, 0x00)
+	buf = append(buf, 0x01)
+	buf = append(buf, 0xF8)
+	debugPrint(fmt.Sprintf("Length of whole message in bits: %d", lenWholeMessage * 8))
 	buf = append(buf, extensionToAddBytes...)
+	// With everything outputted(excluding leading zeros), 
+	// I assembled the hex string inputted as message into the pass-off server online
 	fmt.Printf("Modified message to send to Bob: %x\n", buf)
-
-
-	// lenMessageToReturn := len(originalMessage) +
-	// var messageToReturn []byte
-
-	// Padding and length.  Add a 1 bit and 0 bits until 56 bytes mod 64 (8 bytes at end reserved for length)
-	//var paddedOriginalMessage [64]byte
-	// len := len(originalMessage)
-	// paddedOriginalMessage[0:len] = originalMessage[:]
-	// paddedOriginalMessage[len] = 0x80
-	// for i := len; i < 56; i++ {
-	// 	paddedOriginalMessage[i] = 0x00
-	// }
-	// len <<= 3
-	// for i := uint(0); i < 8; i++ {
-	// 	paddedOriginalMessage[56 + i] = byte(len >> (56 - 8*i))
-	// }
-
-	//fmt.Printf("%x\n", paddedOriginalMessage)
-
-	// m1 := rand.Uint32() & getBitMask(bitN + 1)						// nbits + 1 (21) bits long, bits 22-32 zeroed out
-	// buf := make([]byte, 4)
-	// binary.BigEndian.PutUint32(buf, m1)
-	// h.Reset()														// unneeded since I use a new hash object in each loop
 }
