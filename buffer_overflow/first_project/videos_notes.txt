@@ -1,0 +1,15 @@
+http://www.youtube.com/watch?v=RF7DF4kfs1E&feature=youtu.be
+    16.29 overwrite value of eip with our input so that return value points to something we want to run
+    11:36ish - picture of stack
+
+http://www.youtube.com/watch?v=KRaJoeVXF_8
+    3:25 - EBP-OLD
+    8:30
+    You use $ebp to access elements put on stack that are put on as the function is entered (arguments, return address, and old ebp value),
+    since the stack pointer will be changing as you add local variables in the function, $ebp will stay the same
+
+    11:35 how to assemble and load the Function3.s
+Sample uses of gdb:
+    x/4xw $esp
+    print /d $edx
+    x/1s $ecx
