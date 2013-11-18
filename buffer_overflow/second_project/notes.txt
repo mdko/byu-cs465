@@ -1,39 +1,31 @@
-top_of_memory		(bottom of stack)
-[parameter]
-[parameter]
+bottom_of_memory	(top of stack)
+[localvari]
+[localvari]
+[stackfram]			(local frame pointer (%ebp))
 [returnadd]
-[stackfram]
-[localvari]
-[localvari]
-bottom_of_memory	(stop of stack)
+[parameter]
+[parameter]
+top_of_memory		(bottom of stack)
 
 $esp: 0xffffd2c0
 
 x /32xw 0xffffd2c0
+---------------------------------------------------------------------------------> higher addresses
+			  ---esp---
+0xffffd2c0: 0x08048295	0x41caf8f8	0xbfebfbff	0x41ce3e63
 
+			-------------localvar(password_buffer)-----------------
+			--pwb-12--	--pwb-8--	--pwb-4--	--&password_buffer--
+0xffffd2d0:	0xffffffff	0xffffd30c	0x41cbeb6c	0x6170796d
 
-0xffffd2c0:     0x08048295      0x41caf8f8      0xbfebfbff      0x41ce3e63
+												--localvar(auth_flag)--
+0xffffd2e0:	0x6f777373	0x65686472	0x796f6c6c	0x0000006f
 
+									---ebp---	--return-addr--
+0xffffd2f0: 0x00000002  0xffffd3b4	0xffffd318	0x08048580
 
-0xffffd2d0:     0xffffffff      0xffffd30c      0x41cbeb6c      0x0804833d
-
-														   --localvar(auth_flag)--
-0xffffd2e0:     0xffffd30c      0xffffd308      0x0804a000      0x00000000
-
-												---ebp---	  --return-addr--
-0xffffd2f0:     0x00000002      0xffffd3b4      0xffffd318      0x08048580
-
-			  --pwd(param)--
-0xffffd300:     0xffffd579      0x0000002f      0x080485cb      0x41e6d000
-
-
-0xffffd310:     0x080485c0      0x00000000      0x00000000      0x41ccb963
-
-
-0xffffd320:     0x00000002      0xffffd3b4      0xffffd3c0      0xf7ffc6b0
-
-
-0xffffd330:     0x00000001      0x00000001      0x00000000      0x0804a024
+			--pwd(param)--
+0xffffd300:	0xffffd579  0x0000002f	0x080485cb	0x41e6d000
 
 disas check_authentication
 Dump of assembler code for function check_authentication:
