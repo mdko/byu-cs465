@@ -1,0 +1,135 @@
+top_of_memory		(bottom of stack)
+[parameter]
+[parameter]
+[returnadd]
+[stackfram]
+[localvari]
+[localvari]
+bottom_of_memory	(stop of stack)
+
+$esp: 0xffffd2c0
+
+x /32xw 0xffffd2c0
+
+
+0xffffd2c0:     0x08048295      0x41caf8f8      0xbfebfbff      0x41ce3e63
+
+
+0xffffd2d0:     0xffffffff      0xffffd30c      0x41cbeb6c      0x0804833d
+
+														   --localvar(auth_flag)--
+0xffffd2e0:     0xffffd30c      0xffffd308      0x0804a000      0x00000000
+
+												---ebp---	  --return-addr--
+0xffffd2f0:     0x00000002      0xffffd3b4      0xffffd318      0x08048580
+
+			  --pwd(param)--
+0xffffd300:     0xffffd579      0x0000002f      0x080485cb      0x41e6d000
+
+
+0xffffd310:     0x080485c0      0x00000000      0x00000000      0x41ccb963
+
+
+0xffffd320:     0x00000002      0xffffd3b4      0xffffd3c0      0xf7ffc6b0
+
+
+0xffffd330:     0x00000001      0x00000001      0x00000000      0x0804a024
+
+disas check_authentication
+Dump of assembler code for function check_authentication:
+   0x080484e0 <+0>:     push   %ebp
+   0x080484e1 <+1>:     mov    %esp,%ebp
+   0x080484e3 <+3>:     sub    $0x38,%esp
+   0x080484e6 <+6>:     movl   $0x0,-0xc(%ebp)
+   0x080484ed <+13>:    mov    0x8(%ebp),%eax
+   0x080484f0 <+16>:    mov    %eax,0x4(%esp)
+   0x080484f4 <+20>:    lea    -0x1c(%ebp),%eax
+   0x080484f7 <+23>:    mov    %eax,(%esp)
+   0x080484fa <+26>:    call   0x8048390 <strcpy@plt>
+   0x080484ff <+31>:    movl   $0x8048654,0x4(%esp)
+   0x08048507 <+39>:    lea    -0x1c(%ebp),%eax
+   0x0804850a <+42>:    mov    %eax,(%esp)
+   0x0804850d <+45>:    call   0x8048370 <strcmp@plt>
+   0x08048512 <+50>:    test   %eax,%eax
+   0x08048514 <+52>:    jne    0x804851d <check_authentication+61>
+   0x08048516 <+54>:    movl   $0x1,-0xc(%ebp)
+   0x0804851d <+61>:    movl   $0x804865c,0x4(%esp)
+   0x08048525 <+69>:    lea    -0x1c(%ebp),%eax
+   0x08048528 <+72>:    mov    %eax,(%esp)
+   0x0804852b <+75>:    call   0x8048370 <strcmp@plt>
+   0x08048530 <+80>:    test   %eax,%eax
+   0x08048532 <+82>:    jne    0x804853b <check_authentication+91>
+   0x08048534 <+84>:    movl   $0x1,-0xc(%ebp)
+   0x0804853b <+91>:    mov    -0xc(%ebp),%eax
+   0x0804853e <+94>:    leave
+   0x0804853f <+95>:    ret
+End of assembler dump.
+
+(gdb) disas main
+Dump of assembler code for function main:
+   0x08048540 <+0>:     push   %ebp
+   0x08048541 <+1>:     mov    %esp,%ebp
+   0x08048543 <+3>:     and    $0xfffffff0,%esp
+   0x08048546 <+6>:     sub    $0x10,%esp
+   0x08048549 <+9>:     cmpl   $0x1,0x8(%ebp)
+   0x0804854d <+13>:    jg     0x8048570 <main+48>
+   0x0804854f <+15>:    mov    0xc(%ebp),%eax
+   0x08048552 <+18>:    mov    (%eax),%eax
+   0x08048554 <+20>:    mov    %eax,0x4(%esp)
+   0x08048558 <+24>:    movl   $0x8048665,(%esp)
+   0x0804855f <+31>:    call   0x8048380 <printf@plt>
+   0x08048564 <+36>:    movl   $0x0,(%esp)
+   0x0804856b <+43>:    call   0x80483c0 <exit@plt>
+   0x08048570 <+48>:    mov    0xc(%ebp),%eax
+   0x08048573 <+51>:    add    $0x4,%eax
+   0x08048576 <+54>:    mov    (%eax),%eax
+   0x08048578 <+56>:    mov    %eax,(%esp)
+   0x0804857b <+59>:    call   0x80484e0 <check_authentication>
+   0x08048580 <+64>:    test   %eax,%eax
+   0x08048582 <+66>:    je     0x80485aa <main+106>
+   0x08048584 <+68>:    movl   $0x804867b,(%esp)
+   0x0804858b <+75>:    call   0x80483a0 <puts@plt>
+   0x08048590 <+80>:    movl   $0x8048698,(%esp)
+   0x08048597 <+87>:    call   0x80483a0 <puts@plt>
+   0x0804859c <+92>:    movl   $0x80486ae,(%esp)
+   0x080485a3 <+99>:    call   0x80483a0 <puts@plt>
+   0x080485a8 <+104>:   jmp    0x80485b6 <main+118>
+   0x080485aa <+106>:   movl   $0x80486ca,(%esp)
+   0x080485b1 <+113>:   call   0x80483a0 <puts@plt>
+   0x080485b6 <+118>:   leave
+   0x080485b7 <+119>:   ret
+End of assembler dump.
+
+
+list
+1       #include <stdio.h>
+2       #include <stdlib.h>
+3       #include <string.h>
+4
+5       int check_authentication(char *password) {
+6               int auth_flag = 0;
+7               char password_buffer[16];
+8
+9               strcpy(password_buffer, password);
+11              if(strcmp(password_buffer, "brillig") == 0)
+12                      auth_flag = 1;
+13              if(strcmp(password_buffer, "outgrabe") == 0)
+14                      auth_flag = 1;
+15
+16              return auth_flag;
+17      }
+18
+19      int main(int argc, char *argv[]) {
+20              if(argc < 2) {
+21                      printf("Usage: %s <password>\n", argv[0]);
+22                      exit(0);
+23              }
+24              if(check_authentication(argv[1])) {
+25                      printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+26                      printf("      Access Granted.\n");
+27                      printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+28              } else {
+29                      printf("\nAccess Denied.\n");
+30         		}
+31			}
+32		}
