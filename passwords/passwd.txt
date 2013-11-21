@@ -1,0 +1,3 @@
+michael:x:1001:1001::test:directory:shell12
+hansolo:x:1001:1001::test:directory:shell12
+squall:x:1001:1001::test:directory:shell12
