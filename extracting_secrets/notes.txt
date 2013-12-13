@@ -1,0 +1,46 @@
+Dump of assembler code for function main:
+   0x080485e0 <+0>:  push   %ebp
+   0x080485e1 <+1>:  mov    %esp,%ebp
+   0x080485e3 <+3>:  sub    $0x118,%esp
+   0x080485e9 <+9>:  sub    $0xc,%esp
+   0x080485ec <+12>: push   $0x8095540
+   0x080485f1 <+17>: call   0x804bb30 <printf>
+   0x080485f6 <+22>: add    $0x10,%esp
+   0x080485f9 <+25>: sub    $0xc,%esp
+   0x080485fc <+28>: lea    -0x108(%ebp),%eax
+   0x08048602 <+34>: push   %eax
+   0x08048603 <+35>: call   0x804bf00 <_IO_gets>
+   0x08048608 <+40>: add    $0x10,%esp
+   0x0804860b <+43>: sub    $0xc,%esp
+   0x0804860e <+46>: lea    -0x108(%ebp),%eax
+   0x08048614 <+52>: push   %eax
+   0x08048615 <+53>: call   0x80481e0 <check_cdkey>
+   0x0804861a <+58>: add    $0x10,%esp
+   0x0804861d <+61>: mov    %eax,%eax
+   0x0804861f <+63>: test   %eax,%eax
+   0x08048621 <+65>: jne    0x8048640 <main+96>
+   0x08048623 <+67>: sub    $0xc,%esp
+   0x08048626 <+70>: push   $0x8095565
+   0x0804862b <+75>: call   0x804bb30 <printf>
+   0x08048630 <+80>: add    $0x10,%esp
+   0x08048633 <+83>: sub    $0xc,%esp
+   0x08048636 <+86>: push   $0x1
+   0x08048638 <+88>: call   0x804ad70 <exit>
+   0x0804863d <+93>: lea    0x0(%esi),%esi
+   0x08048640 <+96>: call   0x8048290 <get_quotes_file>
+   0x08048645 <+101>:   mov    %eax,%eax
+   0x08048647 <+103>:   mov    %eax,-0x10c(%ebp)
+   0x0804864d <+109>:   cmpl   $0x0,-0x10c(%ebp)
+   0x08048654 <+116>:   jne    0x8048660 <main+128>
+   0x08048656 <+118>:   sub    $0xc,%esp
+   0x08048659 <+121>:   push   $0x2
+   0x0804865b <+123>:   call   0x804ad70 <exit>
+   0x08048660 <+128>:   sub    $0xc,%esp
+   0x08048663 <+131>:   pushl  -0x10c(%ebp)
+   0x08048669 <+137>:   call   0x80484e0 <print_fortune>
+---Type <return> to continue, or q <return> to quit---
+   0x0804866e <+142>:   add    $0x10,%esp
+   0x08048671 <+145>:   mov    %ebp,%esp
+   0x08048673 <+147>:   pop    %ebp
+   0x08048674 <+148>:   ret    
+End of assembler dump.
